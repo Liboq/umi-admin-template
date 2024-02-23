@@ -153,7 +153,7 @@ const Room: React.FC<unknown> = () => {
   return (
     <PageContainer
       header={{
-        title: 'CRUD 示例',
+        title: '客房管理',
       }}
     >
       <ProTable<API.UserInfo>

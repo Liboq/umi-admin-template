@@ -36,6 +36,7 @@ const RightMenu = ({ dom }) => {
     switch (key) {
       case 'logout':
         navigate('/login');
+        break;
       case 'theme':
         setAntdConfig((config: any) => {
           const algorithm = config.theme!.algorithm as MappingAlgorithm[];
@@ -46,6 +47,7 @@ const RightMenu = ({ dom }) => {
           }
           return config;
         });
+        break;
     }
   };
   return (
