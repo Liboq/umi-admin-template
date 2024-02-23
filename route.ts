@@ -8,6 +8,7 @@ export const route = [
     path: '/login',
     component: './Login',
     hideInMenu: true,
+    layout: false,
   },
   {
     name: '首页',

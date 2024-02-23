@@ -1,25 +1,36 @@
+import services from '@/services/demo';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import {
   LoginForm,
   ProFormCheckbox,
   ProFormText,
 } from '@ant-design/pro-components';
+import { useNavigate } from '@umijs/max';
 import { Tabs, theme } from 'antd';
-
 import { useState } from 'react';
-
+const { userLogin } = services.UserController;
 type LoginType = 'account';
 
 const Login = () => {
   const { token } = theme.useToken();
   const [loginType, setLoginType] = useState<LoginType>('account');
-
+  const navigate = useNavigate();
+  const handleLogin = async (values: any) => {
+    const res = await userLogin(values);
+    if (res.data) {
+      sessionStorage.setItem('userInfo', JSON.stringify(values));
+      navigate('/');
+    }
+  };
   return (
-    <div style={{ backgroundColor: token.colorBgContainer }}>
+    <div
+      style={{ backgroundColor: token.colorBgContainer, marginTop: '100px' }}
+    >
       <LoginForm
         logo="https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg"
         title="Github"
         subTitle="全球最大的代码托管平台"
+        onFinish={handleLogin}
       >
         <Tabs
           centered
@@ -31,7 +42,7 @@ const Login = () => {
         {loginType === 'account' && (
           <>
             <ProFormText
-              name="username"
+              name="name"
               fieldProps={{
                 size: 'large',
                 prefix: <UserOutlined className={'prefixIcon'} />,

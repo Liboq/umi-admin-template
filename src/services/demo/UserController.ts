@@ -23,6 +23,19 @@ export async function queryUserList(
     ...(options || {}),
   });
 }
+export const userLogin = async (
+  body?: API.UserLoginVO,
+  options?: { [key: string]: any },
+) => {
+  return request<API.Result_UserInfo_>('/api/v1/userLogin', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+};
 
 /** 此处后端没有提供注释 POST /api/v1/user */
 export async function addUser(

@@ -64,6 +64,10 @@ declare namespace API {
     /** email */
     email?: string;
   }
+  interface UserLoginVO {
+    name: string;
+    password: string;
+  }
 
   type definitions_0 = null;
 }
