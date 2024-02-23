@@ -17,11 +17,9 @@ export async function getInitialState(): Promise<{
 }
 
 const { darkAlgorithm, defaultAlgorithm } = theme;
-
-export const Layout: RunTimeLayoutConfig = ({ initialState }) => {
+const RightMenu = ({ dom }) => {
   const navigate = useNavigate();
   const setAntdConfig = useAntdConfigSetter();
-
   const DropdownItems: MenuProps['items'] = [
     {
       key: 'logout',
@@ -39,7 +37,7 @@ export const Layout: RunTimeLayoutConfig = ({ initialState }) => {
       case 'logout':
         navigate('/login');
       case 'theme':
-        setAntdConfig((config) => {
+        setAntdConfig((config: any) => {
           const algorithm = config.theme!.algorithm as MappingAlgorithm[];
           if (algorithm && algorithm.includes(darkAlgorithm)) {
             config.theme!.algorithm = [defaultAlgorithm];
@@ -50,6 +48,20 @@ export const Layout: RunTimeLayoutConfig = ({ initialState }) => {
         });
     }
   };
+  return (
+    <>
+      <Dropdown
+        menu={{
+          items: DropdownItems,
+          onClick: DropdownOnClick,
+        }}
+      >
+        {dom}
+      </Dropdown>
+    </>
+  );
+};
+export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
     menu: {
@@ -66,16 +78,7 @@ export const Layout: RunTimeLayoutConfig = ({ initialState }) => {
       title: initialState?.name || '用户', //右上角名称
       size: 'small',
       render: (props, dom) => {
-        return (
-          <Dropdown
-            menu={{
-              items: DropdownItems,
-              onClick: DropdownOnClick,
-            }}
-          >
-            {dom}
-          </Dropdown>
-        );
+        return <RightMenu dom={dom} />;
       },
     },
   };
