@@ -12,13 +12,7 @@ export async function getInitialState(): Promise<{
   userInfo?: API.UserInfo;
 }> {
   const fetchUserInfo = async () => {
-    console.log(888);
-
     try {
-      console.log(
-        sessionStorage.getItem('userInfo') || '{name:"",password:""}',
-      );
-
       const localUserInfo = JSON.parse(
         sessionStorage.getItem('userInfo') || '{"name":"","password":""}',
       );
@@ -37,11 +31,9 @@ export async function getInitialState(): Promise<{
     return undefined;
   };
   if (history.location.pathname !== '/login') {
-    console.log(777);
-
-    const res = await fetchUserInfo();
-    console.log(res);
+    await fetchUserInfo();
   }
+
   return {
     name: 'pikachu',
     avatar:

@@ -41,10 +41,11 @@ declare namespace API {
     id?: string;
     name?: string;
     /** nick */
-    type?: string;
+    typeId?: string;
     /** email */
     status?: RoomGenderEnum;
     price?: number;
+    description?: string;
   }
 
   interface RoomInfoVO {
@@ -54,5 +55,7 @@ declare namespace API {
     /** email */
     type?: string;
     price?: number;
+    description?: string;
+    typeId?: number;
   }
 }

@@ -1,4 +1,6 @@
 import services from '@/services/demo';
+import { createRoom, getRoomList } from '@/utils/request/room';
+import { getRoomCategoryList } from '@/utils/request/room/caregory';
 import {
   ActionType,
   FooterToolbar,
@@ -8,12 +10,11 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { Button, Divider, Drawer, message } from 'antd';
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import CreateForm from './components/CreateForm';
 import UpdateForm, { FormValueType } from './components/UpdateForm';
 
-const { addRoom, queryRoomList, deleteRoom, modifyRoom } =
-  services.RoomController;
+const { deleteRoom, modifyRoom } = services.RoomController;
 
 /**
  * 添加节点
@@ -22,7 +23,7 @@ const { addRoom, queryRoomList, deleteRoom, modifyRoom } =
 const handleAdd = async (fields: API.RoomInfo) => {
   const hide = message.loading('正在添加');
   try {
-    await addRoom({ ...fields });
+    await createRoom({ ...fields });
     hide();
     message.success('添加成功');
     return true;
@@ -87,6 +88,7 @@ const Room: React.FC<unknown> = () => {
     useState<boolean>(false);
   const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef<ActionType>();
+  const [typeList, setTypeList] = useState({});
   const [row, setRow] = useState<API.RoomInfo>();
   const [selectedRowsState, setSelectedRows] = useState<API.RoomInfo[]>([]);
   const columns: ProDescriptionsItemProps<API.RoomInfo>[] = [
@@ -105,19 +107,23 @@ const Room: React.FC<unknown> = () => {
     },
     {
       title: '类型',
-      dataIndex: 'type',
-      valueType: 'text',
+      dataIndex: 'typeId',
+      valueEnum: typeList,
     },
     { title: '价格', dataIndex: 'price', valueType: 'text' },
     {
       title: '状态',
       dataIndex: 'status',
-      hideInForm: true,
       valueEnum: {
-        0: { text: '空闲', status: '0' },
-        1: { text: '已预订', status: '1' },
-        2: { text: '已入住', status: '2' },
+        0: { text: '空闲' },
+        1: { text: '已预订' },
+        2: { text: '已入住' },
       },
+    },
+    {
+      title: '描述',
+      dataIndex: 'description',
+      valueType: 'text',
     },
     {
       title: '操作',
@@ -149,6 +155,18 @@ const Room: React.FC<unknown> = () => {
       ),
     },
   ];
+  const getTypeList = useCallback(async () => {
+    const res = await getRoomCategoryList();
+    let typeOptionList: Record<string, string> = {};
+    res.data.forEach(({ id, name, ...reset }: any) => {
+      typeOptionList[id] = { ...reset, text: name };
+    });
+    setTypeList(typeOptionList);
+  }, []);
+  useEffect(() => {
+    getTypeList();
+  }, []);
+  console.log(typeList);
 
   return (
     <PageContainer
@@ -156,7 +174,7 @@ const Room: React.FC<unknown> = () => {
         title: '客房管理',
       }}
     >
-      <ProTable<API.UserInfo>
+      <ProTable<API.RoomInfo>
         headerTitle="查询表格"
         actionRef={actionRef}
         rowKey="id"
@@ -172,16 +190,10 @@ const Room: React.FC<unknown> = () => {
             新建
           </Button>,
         ]}
-        request={async (params, sorter, filter) => {
-          const { data, success } = await queryRoomList({
-            ...params,
-            // FIXME: remove @ts-ignore
-            // @ts-ignore
-            sorter,
-            filter,
-          });
+        request={async () => {
+          const { data, success } = await getRoomList();
           return {
-            data: data?.list || [],
+            data: data || [],
             success,
           };
         }}
@@ -216,7 +228,7 @@ const Room: React.FC<unknown> = () => {
         onCancel={() => handleModalVisible(false)}
         modalVisible={createModalVisible}
       >
-        <ProTable<API.UserInfo, API.UserInfo>
+        <ProTable<API.RoomInfo, API.RoomInfo>
           onSubmit={async (value) => {
             const success = await handleAdd(value);
             if (success) {

@@ -1,5 +1,6 @@
 import { defineConfig } from '@umijs/max';
-import { route } from './route';
+import { proxyConfig } from './config/proxy';
+import { route } from './config/route';
 export default defineConfig({
   antd: {
     // configProvider
@@ -21,6 +22,7 @@ export default defineConfig({
   layout: {
     title: 'pikachu',
   },
+  proxy: proxyConfig,
   routes: route,
   npmClient: 'pnpm',
 });
