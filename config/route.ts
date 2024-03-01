@@ -50,11 +50,6 @@ export const route = [
         path: '/manage/finance',
         component: './Manage/Finance',
       },
-      {
-        name: '预定管理',
-        path: '/manage/reservation',
-        component: './Manage/Reservation',
-      },
     ],
   },
   {

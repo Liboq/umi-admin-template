@@ -1,4 +1,4 @@
-import services from '@/services/demo';
+import { login } from '@/utils/request/user';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import {
   LoginForm,
@@ -8,7 +8,6 @@ import {
 import { useNavigate } from '@umijs/max';
 import { Tabs, theme } from 'antd';
 import { useState } from 'react';
-const { userLogin } = services.UserController;
 type LoginType = 'account';
 
 const Login = () => {
@@ -16,9 +15,9 @@ const Login = () => {
   const [loginType, setLoginType] = useState<LoginType>('account');
   const navigate = useNavigate();
   const handleLogin = async (values: any) => {
-    const res = await userLogin(values);
+    const res = await login(values);
     if (res.data) {
-      sessionStorage.setItem('userInfo', JSON.stringify(values));
+      localStorage.setItem('token', res.data.token);
       navigate('/');
     }
   };

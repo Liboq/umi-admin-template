@@ -1,4 +1,4 @@
-import { request } from '@@/plugin-request';
+import request from '@/utils/request';
 
 const RoomCategoryBaseUrl = '/api/room-category';
 export const getRoomCategoryList = () => {

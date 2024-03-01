@@ -38,7 +38,7 @@ declare namespace API {
   type RoomGenderEnum = 0 | 1 | 2;
 
   interface RoomInfo {
-    id?: string;
+    id: number;
     name?: string;
     /** nick */
     typeId?: string;

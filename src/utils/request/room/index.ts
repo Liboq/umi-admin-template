@@ -1,8 +1,8 @@
-import { request } from '@@/plugin-request';
+import request from '@/utils/request';
 
 const RoomBaseUrl = '/api/room';
-export const getRoomList = () => {
-  return request(RoomBaseUrl);
+export const getRoomList = (params: API.RoomInfoVO) => {
+  return request(RoomBaseUrl + '/query', { params });
 };
 
 export const createRoom = (data: API.RoomInfoVO) => {
@@ -14,4 +14,7 @@ export const patchRoom = (id: number, data: API.RoomInfoVO) => {
 };
 export const getRoomInfo = (id: number) => {
   return request(`${RoomBaseUrl}/${id}`);
+};
+export const removeRoom = (id: number) => {
+  return request(`${RoomBaseUrl}/${id}`, { method: 'delete' });
 };

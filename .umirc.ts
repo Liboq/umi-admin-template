@@ -22,6 +22,7 @@ export default defineConfig({
   layout: {
     title: 'pikachu',
   },
+  dva: {},
   proxy: proxyConfig,
   routes: route,
   npmClient: 'pnpm',

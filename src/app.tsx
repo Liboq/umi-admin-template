@@ -3,7 +3,6 @@ import { BulbOutlined, LogoutOutlined } from '@ant-design/icons';
 import { RunTimeLayoutConfig, history, useNavigate } from '@umijs/max';
 import { Dropdown, MappingAlgorithm, MenuProps, theme } from 'antd';
 import { useAntdConfigSetter } from 'umi';
-import { userLogin } from './services/demo/UserController';
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
 export async function getInitialState(): Promise<{
@@ -13,19 +12,12 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      const localUserInfo = JSON.parse(
-        sessionStorage.getItem('userInfo') || '{"name":"","password":""}',
-      );
-
-      const currentUser = await userLogin(localUserInfo);
-
-      if (!currentUser.data) {
+      const token = localStorage.getItem('token');
+      if (!token) {
         history.push('/login');
       }
-      return currentUser.data;
+      return token;
     } catch (error) {
-      console.log(error);
-
       history.push('/login');
     }
     return undefined;
@@ -61,6 +53,7 @@ const RightMenu = ({ dom }) => {
     switch (key) {
       case 'logout':
         navigate('/login');
+        localStorage.setItem('token', '');
         break;
       case 'theme':
         setAntdConfig((config: any) => {
