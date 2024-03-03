@@ -15,6 +15,7 @@ export default defineConfig({
     appConfig: {},
     // Add StyleProvider for legacy browsers
   },
+  esbuildMinifyIIFE: true,
   access: {},
   model: {},
   initialState: {},

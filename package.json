@@ -3,6 +3,7 @@
   "author": "Liboq <2661158759@qq.com>",
   "scripts": {
     "build": "max build",
+    "build:test": "max build",
     "dev": "max dev",
     "format": "prettier --cache --write .",
     "postinstall": "max setup",
