@@ -20,11 +20,12 @@ RUN npm run build
 # 设置 Nginx 镜像
 FROM nginx:alpine
 
+RUN mkdir -p /ruanjian/admin_front
 # 将构建的项目复制到 Nginx 默认的 HTML 目录
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist /ruanjian/admin_front
 
 # 复制 Nginx 配置文件
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/nginx.conf /etc/nginx/conf.d/admin_front.conf
 
 # 暴露 Nginx 默认的 HTTP 端口
 EXPOSE 8000
